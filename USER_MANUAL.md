@@ -263,3 +263,4 @@ At the start and end of every shift:
 
 #### Q: How can I run FloatWise on a new PC?
 **A**: Copy `FloatWise.exe` to the computer. FloatWise is self-contained and portable; it requires only standard Windows .NET Framework 4.7.2.
+
