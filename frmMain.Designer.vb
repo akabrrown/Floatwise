@@ -199,7 +199,8 @@ Partial Class frmMain
     Friend WithEvents btnCreateUser As System.Windows.Forms.Button
     Friend WithEvents lblUserMsg As System.Windows.Forms.Label
     Friend WithEvents dgvUsers As System.Windows.Forms.DataGridView
-    Friend WithEvents btnToggleUser As System.Windows.Forms.Button
+    Friend WithEvents btnToggleUser As System.Windows.Forms.Button
+    Friend WithEvents btnResetUserPass As System.Windows.Forms.Button
     Friend WithEvents lblUsersNote As System.Windows.Forms.Label
 
     <System.Diagnostics.DebuggerStepThrough()> _
@@ -359,7 +360,8 @@ Partial Class frmMain
         Me.btnCreateUser = New System.Windows.Forms.Button()
         Me.lblUserMsg = New System.Windows.Forms.Label()
         Me.dgvUsers = New System.Windows.Forms.DataGridView()
-        Me.btnToggleUser = New System.Windows.Forms.Button()
+        Me.btnToggleUser = New System.Windows.Forms.Button()
+        Me.btnResetUserPass = New System.Windows.Forms.Button()
         Me.lblUsersNote = New System.Windows.Forms.Label()
         Me.ssMain = New System.Windows.Forms.StatusStrip()
         Me.tslStatus = New System.Windows.Forms.ToolStripStatusLabel()
@@ -2088,7 +2090,8 @@ Partial Class frmMain
         Me.tpUsers.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(246, Byte), Integer))
         Me.tpUsers.Controls.Add(Me.grpAddUser)
         Me.tpUsers.Controls.Add(Me.dgvUsers)
-        Me.tpUsers.Controls.Add(Me.btnToggleUser)
+        Me.tpUsers.Controls.Add(Me.btnToggleUser)
+        Me.tpUsers.Controls.Add(Me.btnResetUserPass)
         Me.tpUsers.Controls.Add(Me.lblUsersNote)
         Me.tpUsers.Location = New System.Drawing.Point(4, 40)
         Me.tpUsers.Name = "tpUsers"
@@ -2216,6 +2219,19 @@ Partial Class frmMain
         Me.btnToggleUser.TabIndex = 2
         Me.btnToggleUser.Text = "Enable / Disable selected"
         Me.btnToggleUser.UseVisualStyleBackColor = False
+        '
+        'btnResetUserPass
+        '
+        Me.btnResetUserPass.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(59, Byte), Integer))
+        Me.btnResetUserPass.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnResetUserPass.Font = New System.Drawing.Font("Segoe UI", 10.5!, System.Drawing.FontStyle.Bold)
+        Me.btnResetUserPass.ForeColor = System.Drawing.Color.White
+        Me.btnResetUserPass.Location = New System.Drawing.Point(725, 504)
+        Me.btnResetUserPass.Name = "btnResetUserPass"
+        Me.btnResetUserPass.Size = New System.Drawing.Size(200, 42)
+        Me.btnResetUserPass.TabIndex = 3
+        Me.btnResetUserPass.Text = "Reset password"
+        Me.btnResetUserPass.UseVisualStyleBackColor = False
         '
         'lblUsersNote
         '

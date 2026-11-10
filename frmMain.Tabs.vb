@@ -324,6 +324,7 @@ Partial Public Class frmMain
     Private Sub InitUsersEvents()
         AddHandler btnCreateUser.Click, AddressOf btnCreateUser_Click
         AddHandler btnToggleUser.Click, AddressOf btnToggleUser_Click
+        AddHandler btnResetUserPass.Click, AddressOf btnResetUserPass_Click
     End Sub
 
     Public Sub InitTabsEvents()
@@ -382,6 +383,28 @@ Partial Public Class frmMain
             Return
         End If
         Audit(If(u.Active, "User enabled", "User disabled"), u.Role & " account '" & u.Username & "'")
+        RefreshUsersGrid()
+    End Sub
+
+    Private Sub btnResetUserPass_Click(sender As Object, e As EventArgs)
+        If Not currentUser.IsAdmin Then Return
+        If dgvUsers.SelectedRows.Count = 0 Then
+            MessageBox.Show("Click an account in the table first.", "Reset password", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+        Dim u As UserAccount = DirectCast(dgvUsers.SelectedRows(0).DataBoundItem, UserAccount)
+        Dim prompt As String = "Enter a new password for " & u.Role & " '" & u.Username & "' (" & u.FullName & "):" & vbCrLf & vbCrLf & "(Minimum 6 characters containing at least one letter and one number)"
+        Dim newPass As String = InputBox(prompt, "Reset Password - " & u.Username, "").Trim()
+        If newPass = "" Then Return
+
+        Dim err As String = AdminResetWorkerPassword(currentUser.Username, u.Username, newPass)
+        If err <> "" Then
+            MessageBox.Show(err, "Reset password", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Audit("Password reset", "Admin '" & currentUser.Username & "' reset password for " & u.Role & " '" & u.Username & "'")
+        MessageBox.Show("Password for '" & u.Username & "' was updated successfully." & vbCrLf & "Please give them their new credentials.", "Password Reset", MessageBoxButtons.OK, MessageBoxIcon.Information)
         RefreshUsersGrid()
     End Sub
 

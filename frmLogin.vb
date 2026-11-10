@@ -2,16 +2,18 @@ Imports System.Drawing
 Imports System.Windows.Forms
 
 ' =====================================================================
-'  frmLogin - separate sign-in for ADMIN and WORKER.
+'  frmLogin - separate sign-in for ADMIN and WORKER with Reset Password.
 '  * First time the app runs there is no admin, so the admin
 '    creates the first admin account (sign-up).
 '  * After that, only an admin can create workers (Users tab).
 '  * 5 wrong passwords = locked for 30 seconds.
+'  * Both Admin and Worker can reset their password via identity check.
 ' =====================================================================
 Partial Public Class frmLogin
     Inherits System.Windows.Forms.Form
 
     Public Property Result As UserSession
+    Private resetTargetRole As String = "Admin"
 
     Private Function IsDesignMode() As Boolean
         Return Me.DesignMode OrElse
@@ -26,6 +28,7 @@ Partial Public Class frmLogin
             pnlAdmin.Visible = True
             pnlWorker.Visible = False
             pnlSignup.Visible = False
+            pnlReset.Visible = False
             Return
         End If
 
@@ -33,7 +36,14 @@ Partial Public Class frmLogin
 
         AddHandler chkAdminPass.CheckedChanged, Sub(s, e) txtAdminPass.UseSystemPasswordChar = Not chkAdminPass.Checked
         AddHandler chkWorkerPass.CheckedChanged, Sub(s, e) txtWorkerPass.UseSystemPasswordChar = Not chkWorkerPass.Checked
+        AddHandler chkResetPass.CheckedChanged, Sub(s, e)
+                                                    txtResetNewPass.UseSystemPasswordChar = Not chkResetPass.Checked
+                                                    txtResetConfirm.UseSystemPasswordChar = Not chkResetPass.Checked
+                                                End Sub
+
         AddHandler lnkFirstTime.LinkClicked, Sub(s, e) ShowPanel("signup")
+        AddHandler lnkAdminForgot.LinkClicked, Sub(s, e) ShowReset("Admin")
+        AddHandler lnkWorkerForgot.LinkClicked, Sub(s, e) ShowReset("Worker")
 
         AddHandler btnTabAdmin.Click, Sub(s As Object, e As EventArgs) ShowPanel(If(AuthStore.AdminExists(), "admin", "signup"))
         AddHandler btnTabWorker.Click, Sub(s As Object, e As EventArgs) ShowPanel("worker")
@@ -41,13 +51,29 @@ Partial Public Class frmLogin
         AddHandler btnWorkerLogin.Click, Sub(s As Object, e As EventArgs) DoLogin(txtWorkerUser, txtWorkerPass, "Worker", lblWorkerMsg)
         AddHandler btnSignup.Click, AddressOf btnSignup_Click
 
+        AddHandler btnResetCancel.Click, Sub(s, e) ShowPanel(If(resetTargetRole = "Worker", "worker", "admin"))
+        AddHandler btnResetSubmit.Click, AddressOf btnResetSubmit_Click
+
         ShowPanel(If(AuthStore.AdminExists(), "admin", "signup"))
+    End Sub
+
+    Private Sub ShowReset(role As String)
+        resetTargetRole = role
+        lblResetTitle.Text = "Reset " & role & " Password"
+        lblResetMsg.Text = ""
+        txtResetUser.Text = If(role = "Worker", txtWorkerUser.Text.Trim(), txtAdminUser.Text.Trim())
+        txtResetFullName.Clear()
+        txtResetNewPass.Clear()
+        txtResetConfirm.Clear()
+        chkResetPass.Checked = False
+        ShowPanel("reset")
     End Sub
 
     Private Sub ShowPanel(which As String)
         pnlAdmin.Visible = (which = "admin")
         pnlWorker.Visible = (which = "worker")
         pnlSignup.Visible = (which = "signup")
+        pnlReset.Visible = (which = "reset")
 
         ' highlight the active switch, fade the other one
         btnTabAdmin.BackColor = If(which = "worker", ControlPaint.Light(AdminPurple, 0.55F), AdminPurple)
@@ -60,9 +86,16 @@ Partial Public Class frmLogin
             Case "worker"
                 Me.AcceptButton = btnWorkerLogin
                 txtWorkerUser.Focus()
-            Case Else
+            Case "signup"
                 Me.AcceptButton = btnSignup
                 txtSuName.Focus()
+            Case "reset"
+                Me.AcceptButton = btnResetSubmit
+                If txtResetUser.Text.Trim().Length > 0 Then
+                    txtResetFullName.Focus()
+                Else
+                    txtResetUser.Focus()
+                End If
         End Select
     End Sub
 
@@ -113,6 +146,35 @@ Partial Public Class frmLogin
         txtSuConfirm.Clear()
         ShowPanel("admin")
         txtAdminPass.Focus()
+    End Sub
+
+    ' ---------- reset password submit ----------
+    Private Sub btnResetSubmit_Click(sender As Object, e As EventArgs)
+        lblResetMsg.Text = ""
+        Dim uName As String = txtResetUser.Text.Trim()
+        Dim fName As String = txtResetFullName.Text.Trim()
+        Dim p1 As String = txtResetNewPass.Text
+        Dim p2 As String = txtResetConfirm.Text
+
+        Dim problem As String = ResetPassword(uName, fName, p1, p2, resetTargetRole)
+        If problem <> "" Then
+            lblResetMsg.ForeColor = AlertOrange
+            lblResetMsg.Text = problem
+            Return
+        End If
+
+        MessageBox.Show("Password for '" & uName & "' has been reset successfully. Please sign in with your new password.", "Password Reset", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        If resetTargetRole = "Worker" Then
+            txtWorkerUser.Text = uName
+            txtWorkerPass.Clear()
+            ShowPanel("worker")
+            txtWorkerPass.Focus()
+        Else
+            txtAdminUser.Text = uName
+            txtAdminPass.Clear()
+            ShowPanel("admin")
+            txtAdminPass.Focus()
+        End If
     End Sub
 
 End Class

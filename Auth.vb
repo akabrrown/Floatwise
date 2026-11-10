@@ -130,4 +130,64 @@ Public Module AuthStore
         End Try
     End Function
 
+    ''' <summary>Resets password for an account verifying username and registered full name.</summary>
+    Public Function ResetPassword(username As String, fullName As String, newPassword As String, confirmPassword As String, Optional targetRole As String = "") As String
+        username = username.Trim()
+        fullName = fullName.Trim()
+        If username.Length = 0 Then Return "Enter your username."
+        If fullName.Length = 0 Then Return "Enter your registered full name."
+
+        Dim u As UserAccount = FindUser(username)
+        If u Is Nothing Then Return "Account not found with that username."
+        If Not String.IsNullOrEmpty(targetRole) AndAlso Not String.Equals(u.Role, targetRole, StringComparison.OrdinalIgnoreCase) Then
+            Return "This account is not a " & targetRole & " account."
+        End If
+        If Not String.Equals(u.FullName.Trim(), fullName, StringComparison.OrdinalIgnoreCase) Then
+            Return "Full name does not match the account records."
+        End If
+        If Not u.Active Then Return "This account is disabled. Contact your system administrator."
+
+        If newPassword.Length < 6 OrElse Not newPassword.Any(Function(c) Char.IsLetter(c)) OrElse Not newPassword.Any(Function(c) Char.IsDigit(c)) Then
+            Return "New password needs at least 6 characters, with a letter and a number."
+        End If
+        If newPassword <> confirmPassword Then Return "The passwords do not match."
+
+        Dim salt As String = NewSalt()
+        u.Salt = salt
+        u.Hash = HashPassword(newPassword, salt)
+
+        Try
+            Database.DbSaveUser(u)
+            Database.DbInsertLog(New LogEntry With {
+                .TimeText = Date.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                .UserName = u.Username,
+                .Role = u.Role,
+                .Activity = "Password reset",
+                .Details = "Password successfully reset via identity verification."})
+            Return ""
+        Catch ex As Exception
+            Return "Failed to update password in database: " & ex.Message
+        End Try
+    End Function
+
+    ''' <summary>Admin overrides password for a managed user account.</summary>
+    Public Function AdminResetWorkerPassword(adminUsername As String, targetUsername As String, newPassword As String) As String
+        Dim u As UserAccount = FindUser(targetUsername)
+        If u Is Nothing Then Return "User not found."
+        If newPassword.Length < 6 OrElse Not newPassword.Any(Function(c) Char.IsLetter(c)) OrElse Not newPassword.Any(Function(c) Char.IsDigit(c)) Then
+            Return "Password needs at least 6 characters, with a letter and a number."
+        End If
+
+        Dim salt As String = NewSalt()
+        u.Salt = salt
+        u.Hash = HashPassword(newPassword, salt)
+
+        Try
+            Database.DbSaveUser(u)
+            Return ""
+        Catch ex As Exception
+            Return "Database update error: " & ex.Message
+        End Try
+    End Function
+
 End Module

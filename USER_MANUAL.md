@@ -88,6 +88,7 @@ When launching FloatWise on a clean machine:
 - **Admin Tab**: Purple theme. Used by supervisors to access user controls, limits, and system audits.
 - **Worker Tab**: Teal theme. Used by daily shift tellers to record customer transactions.
 - **Brute-Force Lockout Guard**: If 5 consecutive invalid passwords are submitted, the application locks login attempts for 30 seconds with a countdown timer.
+- **Password Reset (Self-Service)**: Both Admin and Worker sign-in cards feature a **"Forgot password? Reset"** option. To protect against unauthorized resets without cloud dependency, the user must verify their exact **Username** and registered **Full Name**. Upon identity verification, they can immediately set and confirm a new secure password.
 
 ---
 
@@ -206,6 +207,7 @@ At the start and end of every shift:
 2. Fill out **Full name**, **Username**, **Password**, **Confirm password**, and select Role (`Worker` or `Admin`).
 3. Click **Create User**.
 4. To deactivate a worker who has ended their shift or left employment, select their row in the grid and click **Enable / Disable Account**. Disabled accounts are immediately barred from logging in.
+5. To reset a worker's credentials, select their row in the grid and click **Reset password**. The administrator enters a new temporary or permanent password (minimum 6 characters with a letter and a number). The system immediately writes a new salted PBKDF2 hash to the SQLite database and records an audit log.
 
 ### Setting Float Low-Balance Limits
 1. On the **Dashboard**, click the desired Network radio button (`MTN MoMo`, `Telecel Cash`, or `AT Money`).

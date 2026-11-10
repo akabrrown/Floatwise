@@ -50,6 +50,23 @@ Partial Class frmLogin
     Friend WithEvents txtSuConfirm As System.Windows.Forms.TextBox
     Friend WithEvents btnSignup As System.Windows.Forms.Button
     Friend WithEvents lblSuMsg As System.Windows.Forms.Label
+    Friend WithEvents lnkAdminForgot As System.Windows.Forms.LinkLabel
+    Friend WithEvents lnkWorkerForgot As System.Windows.Forms.LinkLabel
+    Friend WithEvents pnlReset As System.Windows.Forms.Panel
+    Friend WithEvents lblResetTitle As System.Windows.Forms.Label
+    Friend WithEvents lblResetSub As System.Windows.Forms.Label
+    Friend WithEvents lblResetUser As System.Windows.Forms.Label
+    Friend WithEvents txtResetUser As System.Windows.Forms.TextBox
+    Friend WithEvents lblResetFullName As System.Windows.Forms.Label
+    Friend WithEvents txtResetFullName As System.Windows.Forms.TextBox
+    Friend WithEvents lblResetNewPass As System.Windows.Forms.Label
+    Friend WithEvents txtResetNewPass As System.Windows.Forms.TextBox
+    Friend WithEvents lblResetConfirm As System.Windows.Forms.Label
+    Friend WithEvents txtResetConfirm As System.Windows.Forms.TextBox
+    Friend WithEvents chkResetPass As System.Windows.Forms.CheckBox
+    Friend WithEvents btnResetSubmit As System.Windows.Forms.Button
+    Friend WithEvents btnResetCancel As System.Windows.Forms.Button
+    Friend WithEvents lblResetMsg As System.Windows.Forms.Label
 
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
@@ -77,6 +94,23 @@ Partial Class frmLogin
         Me.lblWorkerMsg = New System.Windows.Forms.Label()
         Me.lblWorkerNote = New System.Windows.Forms.Label()
         Me.pnlSignup = New System.Windows.Forms.Panel()
+        Me.lnkAdminForgot = New System.Windows.Forms.LinkLabel()
+        Me.lnkWorkerForgot = New System.Windows.Forms.LinkLabel()
+        Me.pnlReset = New System.Windows.Forms.Panel()
+        Me.lblResetTitle = New System.Windows.Forms.Label()
+        Me.lblResetSub = New System.Windows.Forms.Label()
+        Me.lblResetUser = New System.Windows.Forms.Label()
+        Me.txtResetUser = New System.Windows.Forms.TextBox()
+        Me.lblResetFullName = New System.Windows.Forms.Label()
+        Me.txtResetFullName = New System.Windows.Forms.TextBox()
+        Me.lblResetNewPass = New System.Windows.Forms.Label()
+        Me.txtResetNewPass = New System.Windows.Forms.TextBox()
+        Me.lblResetConfirm = New System.Windows.Forms.Label()
+        Me.txtResetConfirm = New System.Windows.Forms.TextBox()
+        Me.chkResetPass = New System.Windows.Forms.CheckBox()
+        Me.btnResetSubmit = New System.Windows.Forms.Button()
+        Me.btnResetCancel = New System.Windows.Forms.Button()
+        Me.lblResetMsg = New System.Windows.Forms.Label()
         Me.lblSignupTitle = New System.Windows.Forms.Label()
         Me.lblSuName = New System.Windows.Forms.Label()
         Me.txtSuName = New System.Windows.Forms.TextBox()
@@ -92,6 +126,7 @@ Partial Class frmLogin
         Me.pnlAdmin.SuspendLayout()
         Me.pnlWorker.SuspendLayout()
         Me.pnlSignup.SuspendLayout()
+        Me.pnlReset.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlHeader
@@ -163,6 +198,7 @@ Partial Class frmLogin
         Me.pnlAdmin.Controls.Add(Me.btnAdminLogin)
         Me.pnlAdmin.Controls.Add(Me.lblAdminMsg)
         Me.pnlAdmin.Controls.Add(Me.lnkFirstTime)
+        Me.pnlAdmin.Controls.Add(Me.lnkAdminForgot)
         Me.pnlAdmin.Location = New System.Drawing.Point(20, 168)
         Me.pnlAdmin.Name = "pnlAdmin"
         Me.pnlAdmin.Size = New System.Drawing.Size(440, 420)
@@ -255,6 +291,18 @@ Partial Class frmLogin
         Me.lnkFirstTime.TabStop = True
         Me.lnkFirstTime.Text = "First time? Create the admin account"
         '
+        'lnkAdminForgot
+        '
+        Me.lnkAdminForgot.AutoSize = True
+        Me.lnkAdminForgot.Font = New System.Drawing.Font("Segoe UI", 9.5!)
+        Me.lnkAdminForgot.LinkColor = System.Drawing.Color.FromArgb(109, 40, 217)
+        Me.lnkAdminForgot.Location = New System.Drawing.Point(20, 328)
+        Me.lnkAdminForgot.Name = "lnkAdminForgot"
+        Me.lnkAdminForgot.Size = New System.Drawing.Size(146, 17)
+        Me.lnkAdminForgot.TabIndex = 8
+        Me.lnkAdminForgot.TabStop = True
+        Me.lnkAdminForgot.Text = "Forgot password? Reset"
+        '
         'pnlWorker
         '
         Me.pnlWorker.BackColor = System.Drawing.Color.White
@@ -266,6 +314,7 @@ Partial Class frmLogin
         Me.pnlWorker.Controls.Add(Me.btnWorkerLogin)
         Me.pnlWorker.Controls.Add(Me.lblWorkerMsg)
         Me.pnlWorker.Controls.Add(Me.lblWorkerNote)
+        Me.pnlWorker.Controls.Add(Me.lnkWorkerForgot)
         Me.pnlWorker.Location = New System.Drawing.Point(20, 168)
         Me.pnlWorker.Name = "pnlWorker"
         Me.pnlWorker.Size = New System.Drawing.Size(440, 420)
@@ -356,6 +405,18 @@ Partial Class frmLogin
         Me.lblWorkerNote.Size = New System.Drawing.Size(400, 45)
         Me.lblWorkerNote.TabIndex = 7
         Me.lblWorkerNote.Text = "Workers cannot register themselves. Ask your admin to create your account."
+        '
+        'lnkWorkerForgot
+        '
+        Me.lnkWorkerForgot.AutoSize = True
+        Me.lnkWorkerForgot.Font = New System.Drawing.Font("Segoe UI", 9.5!)
+        Me.lnkWorkerForgot.LinkColor = System.Drawing.Color.FromArgb(15, 118, 110)
+        Me.lnkWorkerForgot.Location = New System.Drawing.Point(20, 345)
+        Me.lnkWorkerForgot.Name = "lnkWorkerForgot"
+        Me.lnkWorkerForgot.Size = New System.Drawing.Size(146, 17)
+        Me.lnkWorkerForgot.TabIndex = 8
+        Me.lnkWorkerForgot.TabStop = True
+        Me.lnkWorkerForgot.Text = "Forgot password? Reset"
         '
         'pnlSignup
         '
@@ -492,6 +553,180 @@ Partial Class frmLogin
         Me.lblSuMsg.Size = New System.Drawing.Size(400, 50)
         Me.lblSuMsg.TabIndex = 10
         '
+        '
+        'pnlReset
+        '
+        Me.pnlReset.BackColor = System.Drawing.Color.White
+        Me.pnlReset.Controls.Add(Me.lblResetTitle)
+        Me.pnlReset.Controls.Add(Me.lblResetSub)
+        Me.pnlReset.Controls.Add(Me.lblResetUser)
+        Me.pnlReset.Controls.Add(Me.txtResetUser)
+        Me.pnlReset.Controls.Add(Me.lblResetFullName)
+        Me.pnlReset.Controls.Add(Me.txtResetFullName)
+        Me.pnlReset.Controls.Add(Me.lblResetNewPass)
+        Me.pnlReset.Controls.Add(Me.txtResetNewPass)
+        Me.pnlReset.Controls.Add(Me.lblResetConfirm)
+        Me.pnlReset.Controls.Add(Me.txtResetConfirm)
+        Me.pnlReset.Controls.Add(Me.chkResetPass)
+        Me.pnlReset.Controls.Add(Me.btnResetSubmit)
+        Me.pnlReset.Controls.Add(Me.btnResetCancel)
+        Me.pnlReset.Controls.Add(Me.lblResetMsg)
+        Me.pnlReset.Location = New System.Drawing.Point(20, 168)
+        Me.pnlReset.Name = "pnlReset"
+        Me.pnlReset.Size = New System.Drawing.Size(440, 420)
+        Me.pnlReset.TabIndex = 6
+        Me.pnlReset.Visible = False
+        '
+        'lblResetTitle
+        '
+        Me.lblResetTitle.AutoSize = True
+        Me.lblResetTitle.Font = New System.Drawing.Font("Segoe UI", 13.0!, System.Drawing.FontStyle.Bold)
+        Me.lblResetTitle.ForeColor = System.Drawing.Color.FromArgb(17, 24, 39)
+        Me.lblResetTitle.Location = New System.Drawing.Point(20, 8)
+        Me.lblResetTitle.Name = "lblResetTitle"
+        Me.lblResetTitle.Size = New System.Drawing.Size(144, 25)
+        Me.lblResetTitle.TabIndex = 0
+        Me.lblResetTitle.Text = "Reset Password"
+        '
+        'lblResetSub
+        '
+        Me.lblResetSub.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblResetSub.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblResetSub.Location = New System.Drawing.Point(20, 32)
+        Me.lblResetSub.Name = "lblResetSub"
+        Me.lblResetSub.Size = New System.Drawing.Size(400, 18)
+        Me.lblResetSub.TabIndex = 1
+        Me.lblResetSub.Text = "Verify your registered identity to reset your password."
+        '
+        'lblResetUser
+        '
+        Me.lblResetUser.AutoSize = True
+        Me.lblResetUser.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblResetUser.ForeColor = System.Drawing.Color.FromArgb(17, 24, 39)
+        Me.lblResetUser.Location = New System.Drawing.Point(20, 52)
+        Me.lblResetUser.Name = "lblResetUser"
+        Me.lblResetUser.Size = New System.Drawing.Size(69, 17)
+        Me.lblResetUser.TabIndex = 2
+        Me.lblResetUser.Text = "Username"
+        '
+        'txtResetUser
+        '
+        Me.txtResetUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtResetUser.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.txtResetUser.Location = New System.Drawing.Point(20, 72)
+        Me.txtResetUser.Name = "txtResetUser"
+        Me.txtResetUser.Size = New System.Drawing.Size(400, 25)
+        Me.txtResetUser.TabIndex = 3
+        '
+        'lblResetFullName
+        '
+        Me.lblResetFullName.AutoSize = True
+        Me.lblResetFullName.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblResetFullName.ForeColor = System.Drawing.Color.FromArgb(17, 24, 39)
+        Me.lblResetFullName.Location = New System.Drawing.Point(20, 102)
+        Me.lblResetFullName.Name = "lblResetFullName"
+        Me.lblResetFullName.Size = New System.Drawing.Size(140, 17)
+        Me.lblResetFullName.TabIndex = 4
+        Me.lblResetFullName.Text = "Registered Full Name"
+        '
+        'txtResetFullName
+        '
+        Me.txtResetFullName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtResetFullName.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.txtResetFullName.Location = New System.Drawing.Point(20, 122)
+        Me.txtResetFullName.Name = "txtResetFullName"
+        Me.txtResetFullName.Size = New System.Drawing.Size(400, 25)
+        Me.txtResetFullName.TabIndex = 5
+        '
+        'lblResetNewPass
+        '
+        Me.lblResetNewPass.AutoSize = True
+        Me.lblResetNewPass.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblResetNewPass.ForeColor = System.Drawing.Color.FromArgb(17, 24, 39)
+        Me.lblResetNewPass.Location = New System.Drawing.Point(20, 152)
+        Me.lblResetNewPass.Name = "lblResetNewPass"
+        Me.lblResetNewPass.Size = New System.Drawing.Size(97, 17)
+        Me.lblResetNewPass.TabIndex = 6
+        Me.lblResetNewPass.Text = "New Password"
+        '
+        'txtResetNewPass
+        '
+        Me.txtResetNewPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtResetNewPass.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.txtResetNewPass.Location = New System.Drawing.Point(20, 172)
+        Me.txtResetNewPass.Name = "txtResetNewPass"
+        Me.txtResetNewPass.Size = New System.Drawing.Size(195, 25)
+        Me.txtResetNewPass.TabIndex = 7
+        Me.txtResetNewPass.UseSystemPasswordChar = True
+        '
+        'lblResetConfirm
+        '
+        Me.lblResetConfirm.AutoSize = True
+        Me.lblResetConfirm.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblResetConfirm.ForeColor = System.Drawing.Color.FromArgb(17, 24, 39)
+        Me.lblResetConfirm.Location = New System.Drawing.Point(225, 152)
+        Me.lblResetConfirm.Name = "lblResetConfirm"
+        Me.lblResetConfirm.Size = New System.Drawing.Size(120, 17)
+        Me.lblResetConfirm.TabIndex = 8
+        Me.lblResetConfirm.Text = "Confirm Password"
+        '
+        'txtResetConfirm
+        '
+        Me.txtResetConfirm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtResetConfirm.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.txtResetConfirm.Location = New System.Drawing.Point(225, 172)
+        Me.txtResetConfirm.Name = "txtResetConfirm"
+        Me.txtResetConfirm.Size = New System.Drawing.Size(195, 25)
+        Me.txtResetConfirm.TabIndex = 9
+        Me.txtResetConfirm.UseSystemPasswordChar = True
+        '
+        'chkResetPass
+        '
+        Me.chkResetPass.AutoSize = True
+        Me.chkResetPass.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.chkResetPass.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.chkResetPass.Location = New System.Drawing.Point(20, 202)
+        Me.chkResetPass.Name = "chkResetPass"
+        Me.chkResetPass.Size = New System.Drawing.Size(113, 19)
+        Me.chkResetPass.TabIndex = 10
+        Me.chkResetPass.Text = "Show passwords"
+        Me.chkResetPass.UseVisualStyleBackColor = True
+        '
+        'btnResetSubmit
+        '
+        Me.btnResetSubmit.BackColor = System.Drawing.Color.FromArgb(22, 101, 52)
+        Me.btnResetSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnResetSubmit.Font = New System.Drawing.Font("Segoe UI", 10.5!, System.Drawing.FontStyle.Bold)
+        Me.btnResetSubmit.ForeColor = System.Drawing.Color.White
+        Me.btnResetSubmit.Location = New System.Drawing.Point(20, 228)
+        Me.btnResetSubmit.Name = "btnResetSubmit"
+        Me.btnResetSubmit.Size = New System.Drawing.Size(400, 38)
+        Me.btnResetSubmit.TabIndex = 11
+        Me.btnResetSubmit.Text = "Reset Password"
+        Me.btnResetSubmit.UseVisualStyleBackColor = False
+        '
+        'btnResetCancel
+        '
+        Me.btnResetCancel.BackColor = System.Drawing.Color.FromArgb(243, 244, 246)
+        Me.btnResetCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnResetCancel.Font = New System.Drawing.Font("Segoe UI", 9.5!)
+        Me.btnResetCancel.ForeColor = System.Drawing.Color.FromArgb(55, 65, 81)
+        Me.btnResetCancel.Location = New System.Drawing.Point(20, 272)
+        Me.btnResetCancel.Name = "btnResetCancel"
+        Me.btnResetCancel.Size = New System.Drawing.Size(400, 32)
+        Me.btnResetCancel.TabIndex = 12
+        Me.btnResetCancel.Text = "Back to Sign In"
+        Me.btnResetCancel.UseVisualStyleBackColor = False
+        '
+        'lblResetMsg
+        '
+        Me.lblResetMsg.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblResetMsg.ForeColor = System.Drawing.Color.FromArgb(234, 88, 12)
+        Me.lblResetMsg.Location = New System.Drawing.Point(20, 310)
+        Me.lblResetMsg.Name = "lblResetMsg"
+        Me.lblResetMsg.Size = New System.Drawing.Size(400, 40)
+        Me.lblResetMsg.TabIndex = 13
+        '
         'frmLogin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 19.0!)
@@ -504,6 +739,7 @@ Partial Class frmLogin
         Me.Controls.Add(Me.pnlAdmin)
         Me.Controls.Add(Me.pnlWorker)
         Me.Controls.Add(Me.pnlSignup)
+        Me.Controls.Add(Me.pnlReset)
         Me.Font = New System.Drawing.Font("Segoe UI", 10.5!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Margin = New System.Windows.Forms.Padding(4)
@@ -520,6 +756,8 @@ Partial Class frmLogin
         Me.pnlWorker.PerformLayout()
         Me.pnlSignup.ResumeLayout(False)
         Me.pnlSignup.PerformLayout()
+        Me.pnlReset.ResumeLayout(False)
+        Me.pnlReset.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
