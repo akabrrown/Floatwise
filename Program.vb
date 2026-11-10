@@ -12,8 +12,9 @@ Module Program
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
 
+        Database.InitDatabase()
         AuthStore.LoadUsers()
-        Ledger.InitDemoOnce()
+        Ledger.LoadFromDb()
 
         Do
             Dim user As UserSession = Nothing

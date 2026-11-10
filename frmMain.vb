@@ -506,17 +506,7 @@ Partial Public Class frmMain
             "Commission:  " & Money(commission)
         If MessageBox.Show(summary, "Confirm transaction", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
 
-        Select Case t
-            Case TypeCashIn
-                CashInTill += amount
-                Floats(net) -= amount
-            Case TypeCashOut, TypeTopUp
-                CashInTill -= amount
-                Floats(net) += amount
-        End Select
-
-        Txns.Insert(0, New Txn With {
-            .Id = NextId,
+        Dim newTxn As New Txn With {
             .TimeText = Date.Now.ToString("HH:mm"),
             .Network = net,
             .TxnType = t,
@@ -524,11 +514,16 @@ Partial Public Class frmMain
             .Amount = amount,
             .Commission = commission,
             .RecordedBy = currentUser.Username,
-            .Role = currentUser.Role})
-        NextId += 1
-        NotBackedUp = True
+            .Role = currentUser.Role}
 
-        Audit("Transaction", t & " " & Money(amount) & " on " & net & If(phone <> "", " (" & phone & ")", ""))
+        Dim logMsg As String = t & " " & Money(amount) & " on " & net & If(phone <> "", " (" & phone & ")", "")
+        Try
+            ExecuteTransaction(newTxn, logMsg)
+        Catch ex As Exception
+            MessageBox.Show("Database error while saving transaction: " & vbCrLf & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
         RefreshAll()
         ClearForm(True)
         tslStatus.Text = "Saved " & t & " of " & Money(amount) & " on " & net & " at " & Date.Now.ToString("HH:mm") & "."
@@ -579,17 +574,14 @@ Partial Public Class frmMain
             Return
         End If
 
-        Select Case t.TxnType
-            Case TypeCashIn
-                CashInTill -= t.Amount
-                Floats(t.Network) += t.Amount
-            Case TypeCashOut, TypeTopUp
-                CashInTill += t.Amount
-                Floats(t.Network) -= t.Amount
-        End Select
-        Txns.Remove(t)
-        NotBackedUp = True
-        Audit("Void", t.TxnType & " " & Money(t.Amount) & " on " & t.Network & " by " & t.RecordedBy & ". Reason: " & reason)
+        Dim auditDetails As String = t.TxnType & " " & Money(t.Amount) & " on " & t.Network & " by " & t.RecordedBy & ". Reason: " & reason
+        Try
+            VoidTransaction(t, reason, currentUser.Username, currentUser.Role, auditDetails)
+        Catch ex As Exception
+            MessageBox.Show("Database error while voiding transaction: " & vbCrLf & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
         RefreshAll()
         tslStatus.Text = "Transaction voided."
     End Sub
@@ -676,7 +668,7 @@ Partial Public Class frmMain
                             "Set Float Limit", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
-        Limits(net) = v
+        SaveLimit(net, v)
         Audit("Float limit", net & " limit set to " & Money(v))
         RefreshAll()
         tslStatus.Text = "Float limit for " & net & " set to " & Money(v) & "."
@@ -703,11 +695,12 @@ Partial Public Class frmMain
             End If
         Next
 
-        CashInTill = values(0)
-        Floats(Networks(0)) = values(1)
-        Floats(Networks(1)) = values(2)
-        Floats(Networks(2)) = values(3)
-        NotBackedUp = True
+        Dim newFloats As New Dictionary(Of String, Decimal) From {
+            {Networks(0), values(1)},
+            {Networks(1), values(2)},
+            {Networks(2), values(3)}
+        }
+        SaveBalances(values(0), newFloats)
         Audit("Balances set", "Till " & Money(values(0)) & ", MTN " & Money(values(1)) & ", Telecel " & Money(values(2)) & ", AirtelTigo " & Money(values(3)))
         RefreshAll()
         tslStatus.Text = "Balances updated."

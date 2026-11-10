@@ -99,7 +99,7 @@ Partial Public Class frmMain
             MessageBox.Show("Enter the notes and coins first.", "Cash count", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
-        CountedCash = counted
+        RecordCashCount(counted, currentUser.Username)
         Audit("Cash count", "Counted " & Money(counted) & " vs app " & Money(CashInTill) & " (difference " & Money(counted - CashInTill) & ")")
         tslStatus.Text = "Cash count recorded: " & Money(counted) & "."
         RefreshReportIfOpen()
@@ -124,6 +124,7 @@ Partial Public Class frmMain
                            "Match till", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
         Audit("Till adjusted", "Till changed from " & Money(CashInTill) & " to " & Money(counted) & " to match the count")
         CashInTill = counted
+        Database.DbSaveTillState("cash_in_till", CashInTill.ToString("F2", CultureInfo.InvariantCulture))
         NotBackedUp = True
         RefreshAll()
     End Sub
@@ -278,7 +279,7 @@ Partial Public Class frmMain
         Dim entry As LogEntry = DirectCast(dgvLog.SelectedRows(0).DataBoundItem, LogEntry)
         If MessageBox.Show("Delete this log entry?" & vbCrLf & entry.TimeText & "  " & entry.Activity,
                            "Delete log entry", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) <> DialogResult.Yes Then Return
-        Logs.Remove(entry)
+        DeleteLog(entry)
         Audit("Log entry deleted", entry.TimeText & " - " & entry.Activity)
     End Sub
 
@@ -288,7 +289,7 @@ Partial Public Class frmMain
         If MessageBox.Show("Delete ALL " & Logs.Count & " log entries? This cannot be undone.",
                            "Clear log", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) <> DialogResult.Yes Then Return
         Dim removed As Integer = Logs.Count
-        Logs.Clear()
+        ClearLogs()
         Audit("Log cleared", removed & " entries removed")
     End Sub
 

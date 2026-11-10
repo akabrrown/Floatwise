@@ -5,8 +5,7 @@ Imports System.Text.RegularExpressions
 
 ' =====================================================================
 '  Auth.vb - accounts, roles and password safety.
-'  Accounts are saved in a small file on this PC:
-'     %AppData%\FloatWise\users.txt
+'  Accounts are persisted in SQLite database (%AppData%\FloatWise\floatwise.db).
 '  Passwords are NEVER stored - only a salted PBKDF2 hash.
 '  Roles:  Admin  = everything (void, delete logs, create workers...)
 '          Worker = record transactions, view/print reports, count cash
@@ -46,45 +45,29 @@ Public Module AuthStore
     Public FailedAttempts As Integer = 0
     Public LockedUntil As Date = Date.MinValue
 
-    Private Function FilePath() As String
-        Dim dir As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FloatWise")
-        Directory.CreateDirectory(dir)
-        Return Path.Combine(dir, "users.txt")
-    End Function
-
     Public Sub LoadUsers()
         Users.Clear()
         Try
-            Dim fileName As String = FilePath()
-            If Not IO.File.Exists(fileName) Then Return
-            For Each line As String In IO.File.ReadAllLines(fileName)
-                Dim p() As String = line.Split("|"c)
-                If p.Length >= 7 Then
-                    Users.Add(New UserAccount With {
-                        .Username = p(0), .Role = p(1), .FullName = p(2),
-                        .Salt = p(3), .Hash = p(4), .Active = (p(5) = "1"), .Created = p(6)})
-                End If
-            Next
-        Catch
-            ' If the file cannot be read we simply start with no accounts.
+            Dim loaded As List(Of UserAccount) = Database.DbLoadUsers()
+            Users.AddRange(loaded)
+        Catch ex As Exception
+            ' If database cannot be read, starts empty
         End Try
     End Sub
 
     Public Function SaveUsers() As Boolean
         Try
-            Dim lines As New List(Of String)
             For Each u As UserAccount In Users
-                lines.Add(u.Username & "|" & u.Role & "|" & u.FullName & "|" & u.Salt & "|" & u.Hash & "|" & If(u.Active, "1", "0") & "|" & u.Created)
+                Database.DbSaveUser(u)
             Next
-            File.WriteAllLines(FilePath(), lines)
             Return True
-        Catch
+        Catch ex As Exception
             Return False
         End Try
     End Function
 
     Public Function AdminExists() As Boolean
-        Return Users.Any(Function(u) u.Role = "Admin")
+        Return Users.Any(Function(u) u.Role = "Admin" AndAlso u.Active)
     End Function
 
     Public Function FindUser(username As String) As UserAccount
@@ -133,15 +116,18 @@ Public Module AuthStore
         If password <> confirm Then Return "The two passwords do not match."
 
         Dim salt As String = NewSalt()
-        Users.Add(New UserAccount With {
+        Dim newAcc As New UserAccount With {
             .Username = username, .FullName = fullName, .Role = role,
             .Salt = salt, .Hash = HashPassword(password, salt),
-            .Active = True, .Created = Date.Now.ToString("yyyy-MM-dd")})
-        If Not SaveUsers() Then
-            Users.RemoveAt(Users.Count - 1)
-            Return "The account file could not be saved. Check folder permissions."
-        End If
-        Return ""
+            .Active = True, .Created = Date.Now.ToString("yyyy-MM-dd")}
+
+        Try
+            Database.DbSaveUser(newAcc)
+            Users.Add(newAcc)
+            Return ""
+        Catch ex As Exception
+            Return "Failed to save account to database: " & ex.Message
+        End Try
     End Function
 
 End Module

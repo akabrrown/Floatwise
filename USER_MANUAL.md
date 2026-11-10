@@ -37,7 +37,8 @@ FloatWise is a high-reliability Windows desktop application designed specificall
 ### Technical Specifications
 - **Operating Environment**: Windows 10 / Windows 11 (64-bit & 32-bit compatible).
 - **Runtime**: Microsoft .NET Framework 4.7.2.
-- **Storage & Security**: Zero cloud dependency. High-performance local ledger with PBKDF2 cryptographic credential protection (`HMAC-SHA1`, 10,000 derivation rounds, per-user cryptographic salt).
+- **Backend & Storage**: Embedded SQLite database (`System.Data.SQLite` in WAL journal mode) located at `%AppData%\FloatWise\floatwise.db`. Fully ACID-compliant atomic transactions for all cash and e-float movements with zero cloud dependency.
+- **Security & Cryptography**: PBKDF2 cryptographic credential protection (`HMAC-SHA1`, 10,000 derivation rounds, per-user cryptographic salt) stored directly in the encrypted/isolated local database.
 - **Design Mode Support**: Visual Studio declarative Windows Forms Designer with full component serializability.
 
 ---

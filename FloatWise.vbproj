@@ -13,7 +13,8 @@
     <MyType>WindowsFormsWithCustomSubMain</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <Deterministic>true</Deterministic>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth.vb" />
+    <Compile Include="Database.vb" />
     <Compile Include="frmLogin.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -137,4 +139,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119.0" />
+  </ItemGroup>
 </Project>
