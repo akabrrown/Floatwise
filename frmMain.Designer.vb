@@ -832,17 +832,17 @@ Partial Class frmMain
         Me.pnlType.Controls.Add(Me.btnToggleTopUpType)
         Me.pnlType.Location = New System.Drawing.Point(16, 106)
         Me.pnlType.Name = "pnlType"
-        Me.pnlType.Size = New System.Drawing.Size(356, 28)
+        Me.pnlType.Size = New System.Drawing.Size(360, 28)
         Me.pnlType.TabIndex = 3
         '
         'radTypeCashIn
         '
         Me.radTypeCashIn.AutoSize = True
-        Me.radTypeCashIn.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.radTypeCashIn.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.radTypeCashIn.ForeColor = System.Drawing.Color.FromArgb(CType(CType(22, Byte), Integer), CType(CType(101, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.radTypeCashIn.Location = New System.Drawing.Point(0, 3)
         Me.radTypeCashIn.Name = "radTypeCashIn"
-        Me.radTypeCashIn.Size = New System.Drawing.Size(88, 25)
+        Me.radTypeCashIn.Size = New System.Drawing.Size(81, 24)
         Me.radTypeCashIn.TabIndex = 0
         Me.radTypeCashIn.TabStop = True
         Me.radTypeCashIn.Text = "Cash-In"
@@ -851,11 +851,11 @@ Partial Class frmMain
         'radTypeCashOut
         '
         Me.radTypeCashOut.AutoSize = True
-        Me.radTypeCashOut.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.radTypeCashOut.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.radTypeCashOut.ForeColor = System.Drawing.Color.FromArgb(CType(CType(180, Byte), Integer), CType(CType(83, Byte), Integer), CType(CType(9, Byte), Integer))
-        Me.radTypeCashOut.Location = New System.Drawing.Point(100, 3)
+        Me.radTypeCashOut.Location = New System.Drawing.Point(78, 3)
         Me.radTypeCashOut.Name = "radTypeCashOut"
-        Me.radTypeCashOut.Size = New System.Drawing.Size(101, 25)
+        Me.radTypeCashOut.Size = New System.Drawing.Size(93, 24)
         Me.radTypeCashOut.TabIndex = 1
         Me.radTypeCashOut.TabStop = True
         Me.radTypeCashOut.Text = "Cash-Out"
@@ -864,11 +864,11 @@ Partial Class frmMain
         'radTypeTopUp
         '
         Me.radTypeTopUp.AutoSize = True
-        Me.radTypeTopUp.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.radTypeTopUp.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.radTypeTopUp.ForeColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(40, Byte), Integer), CType(CType(217, Byte), Integer))
-        Me.radTypeTopUp.Location = New System.Drawing.Point(210, 3)
+        Me.radTypeTopUp.Location = New System.Drawing.Point(164, 3)
         Me.radTypeTopUp.Name = "radTypeTopUp"
-        Me.radTypeTopUp.Size = New System.Drawing.Size(127, 25)
+        Me.radTypeTopUp.Size = New System.Drawing.Size(118, 24)
         Me.radTypeTopUp.TabIndex = 2
         Me.radTypeTopUp.TabStop = True
         Me.radTypeTopUp.Text = "Float Top-up"
@@ -877,12 +877,13 @@ Partial Class frmMain
         'btnToggleTopUpType
         '
         Me.btnToggleTopUpType.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(246, Byte), Integer))
+        Me.btnToggleTopUpType.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(209, Byte), Integer), CType(CType(213, Byte), Integer), CType(CType(219, Byte), Integer))
         Me.btnToggleTopUpType.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnToggleTopUpType.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.btnToggleTopUpType.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
-        Me.btnToggleTopUpType.Location = New System.Drawing.Point(325, 2)
+        Me.btnToggleTopUpType.ForeColor = System.Drawing.Color.FromArgb(CType(CType(75, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(99, Byte), Integer))
+        Me.btnToggleTopUpType.Location = New System.Drawing.Point(286, 2)
         Me.btnToggleTopUpType.Name = "btnToggleTopUpType"
-        Me.btnToggleTopUpType.Size = New System.Drawing.Size(26, 25)
+        Me.btnToggleTopUpType.Size = New System.Drawing.Size(24, 22)
         Me.btnToggleTopUpType.TabIndex = 3
         Me.btnToggleTopUpType.Text = "⇄"
         Me.btnToggleTopUpType.UseVisualStyleBackColor = False

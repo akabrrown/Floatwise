@@ -220,6 +220,8 @@ Partial Public Class frmMain
         tip.SetToolTip(btnToggleLimitMode, "Toggle between Set Float Limit and Top up cash in till")
         tip.SetToolTip(btnToggleTopUpType, "Toggle between Float Top-up and Top up cash in till")
 
+        UpdateTopUpLayout()
+
         AddHandler Me.FormClosing, AddressOf frmMain_FormClosing
 
         InitTabsEvents()
@@ -388,6 +390,7 @@ Partial Public Class frmMain
             Else
                 radTypeTopUp.Checked = False
             End If
+            UpdateTopUpLayout()
         End Set
     End Property
 
@@ -738,6 +741,31 @@ Partial Public Class frmMain
         ToggleSetLimitMode()
     End Sub
 
+    Public Sub UpdateTopUpLayout()
+        If radTypeCashIn Is Nothing OrElse radTypeCashOut Is Nothing OrElse radTypeTopUp Is Nothing OrElse btnToggleTopUpType Is Nothing Then Return
+
+        ' Position buttons sequentially with clean spacing to prevent overlaps
+        radTypeCashIn.Left = 0
+        radTypeCashIn.Top = 3
+
+        radTypeCashOut.Left = radTypeCashIn.Right + 5
+        radTypeCashOut.Top = 3
+
+        radTypeTopUp.Left = radTypeCashOut.Right + 5
+        radTypeTopUp.Top = 3
+
+        ' Always position the toggle button cleanly right after the top-up text
+        btnToggleTopUpType.Left = radTypeTopUp.Right + 3
+        btnToggleTopUpType.Top = 2
+        btnToggleTopUpType.Size = New Size(24, 22)
+
+        ' Ensure the container panel encompasses the controls without clipping
+        Dim rightMost As Integer = btnToggleTopUpType.Right + 4
+        If rightMost > pnlType.Width Then
+            pnlType.Width = Math.Min(370, rightMost)
+        End If
+    End Sub
+
     Public Sub ToggleTopUpType()
         If radTypeTopUp.Text = TypeTopUp Then
             radTypeTopUp.Text = TypeTillTopUp
@@ -747,6 +775,7 @@ Partial Public Class frmMain
             radTypeTopUp.ForeColor = Color.FromArgb(109, 40, 217)
         End If
         radTypeTopUp.Checked = True
+        UpdateTopUpLayout()
         Type_CheckedChanged(radTypeTopUp, EventArgs.Empty)
         tslStatus.Text = "Entry type: " & radTypeTopUp.Text & "."
     End Sub
