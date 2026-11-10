@@ -157,13 +157,19 @@ When launching FloatWise on a clean machine:
 6. Click **Save Transaction**.
 7. **Result**: Cash in Till decreases by the amount; selected Network Float increases by the amount.
 
-### Recording a Float Top-up
-*Agent purchases electronic float using physical cash from the till.*
-1. Select the **Network** radio button.
-2. Select the `Float Top-up` radio button (the phone number field disables automatically).
-3. Enter the amount of float purchased.
-4. Click **Save Transaction**.
-5. **Result**: Selected Network Float increases; Cash in Till decreases.
+### Recording a Float Top-up or Cash in Till Top-up
+FloatWise provides a dual-mode toggle for replenishing either telecom floats or physical till cash:
+1. **Float Top-up (Cash to Float)**:
+   - Select the desired **Network** (MTN, Telecel, or AT).
+   - Click `Float Top-up` (the phone number field disables automatically).
+   - Enter the amount of float purchased from the bank or master agent.
+   - Click **Save Transaction**.
+   - *Result*: Selected Network Float increases; Cash in Till decreases.
+2. **Top up cash in till (Drawer Replenishment)**:
+   - Click the `⇄` toggle button beside `Float Top-up` to switch the mode to **Top up cash in till** (or use the Dashboard action button).
+   - Enter the cash amount brought from the vault or bank.
+   - Click **Save Transaction**.
+   - *Result*: Cash in Till increases directly, recorded in SQLite and stamped in the audit ledger.
 
 ### Transaction Numbers & Phone Handling
 FloatWise displays customer mobile numbers **in full with zero asterisk masking (`0241234567`)** across all tables, reports, and search queries:
@@ -209,11 +215,18 @@ At the start and end of every shift:
 4. To deactivate a worker who has ended their shift or left employment, select their row in the grid and click **Enable / Disable Account**. Disabled accounts are immediately barred from logging in.
 5. To reset a worker's credentials, select their row in the grid and click **Reset password**. The administrator enters a new temporary or permanent password (minimum 6 characters with a letter and a number). The system immediately writes a new salted PBKDF2 hash to the SQLite database and records an audit log.
 
-### Setting Float Low-Balance Limits
-1. On the **Dashboard**, click the desired Network radio button (`MTN MoMo`, `Telecel Cash`, or `AT Money`).
-2. Click **Set Float Limit**.
-3. Enter the minimum threshold (e.g. `2000` for GH₵ 2,000.00).
-4. When available float drops below this number, the dashboard card highlights in amber and the Low Float Alert banner activates.
+### Setting Float Low-Balance Limits & Topping Up Till Cash
+The Dashboard action bar features an intelligent dual-mode button with a dedicated `⇄` toggle:
+1. **Set Float Limit Mode (Purple Button)**:
+   - Click the desired Network card (`MTN MoMo`, `Telecel Cash`, or `AT Money`) or click the `⇄` toggle to enter **Set Float Limit** mode.
+   - Click **Set Float Limit**.
+   - Enter the minimum threshold (e.g. `2000` for GH₵ 2,000.00).
+   - When available float drops below this number, the dashboard card highlights in amber and the Low Float Alert banner activates.
+2. **Top Up Cash in Till Mode (Deep Teal Button)**:
+   - Click the **Cash in till** card at the top left of the Dashboard, or click the `⇄` toggle button to change the action to **Top up cash in till**.
+   - Click **Top up cash in till**.
+   - Enter the cash amount being added into the drawer (e.g. `500` for GH₵ 500.00).
+   - FloatWise immediately increases `Cash in Till`, persists the new balance to SQLite `till_state`, records an entry in `audit_logs`, and updates the dashboard cards in real time.
 
 ### Setting Opening Balances
 1. Click **Set Balances** (Admin only).

@@ -90,7 +90,7 @@ Partial Public Class frmMain
         Dim scoped As List(Of Txn) = GetScopedTxns()
         lblMoveIn.Text = Money(scoped.Where(Function(x) x.TxnType = TypeCashIn).Sum(Function(x) x.Amount))
         lblMoveOut.Text = Money(scoped.Where(Function(x) x.TxnType = TypeCashOut).Sum(Function(x) x.Amount))
-        lblMoveTop.Text = Money(scoped.Where(Function(x) x.TxnType = TypeTopUp).Sum(Function(x) x.Amount))
+        lblMoveTop.Text = Money(scoped.Where(Function(x) x.TxnType = TypeTopUp OrElse x.TxnType = TypeTillTopUp).Sum(Function(x) x.Amount))
     End Sub
 
     Private Sub btnCountRecord_Click(sender As Object, e As EventArgs)
@@ -506,7 +506,7 @@ Partial Public Class frmMain
         lines.Add("##BY TRANSACTION TYPE")
         lines.Add(PadR("Type", 22) & PadL("Txns", 6) & PadL("Volume", 18) & PadL("Commission", 18))
         lines.Add(thin)
-        For Each ty As String In New String() {TypeCashIn, TypeCashOut, TypeTopUp}
+        For Each ty As String In New String() {TypeCashIn, TypeCashOut, TypeTopUp, TypeTillTopUp}
             Dim tyName As String = ty
             Dim rows As List(Of Txn) = scoped.Where(Function(x) x.TxnType = tyName).ToList()
             lines.Add(PadR(tyName, 22) & PadL(rows.Count.ToString(), 6) & PadL(RepMoney(rows.Sum(Function(x) x.Amount)), 18) & PadL(RepMoney(rows.Sum(Function(x) x.Commission)), 18))

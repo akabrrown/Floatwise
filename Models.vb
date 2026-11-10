@@ -36,6 +36,7 @@ Public Module Ledger
     Public Const TypeCashIn As String = "Cash-In"
     Public Const TypeCashOut As String = "Cash-Out"
     Public Const TypeTopUp As String = "Float Top-up"
+    Public Const TypeTillTopUp As String = "Top up cash in till"
 
     Public ReadOnly Networks() As String = {"MTN MoMo", "Telecel Cash", "AirtelTigo Money"}
 
@@ -118,10 +119,13 @@ Public Module Ledger
             Case TypeCashOut, TypeTopUp
                 CashInTill -= t.Amount
                 Floats(t.Network) += t.Amount
+            Case TypeTillTopUp
+                CashInTill += t.Amount
         End Select
 
         Try
-            Dim newId As Integer = Database.DbExecuteTransaction(t, CashInTill, Floats(t.Network), logMsg)
+            Dim currentFloat As Decimal = If(Floats.ContainsKey(t.Network), Floats(t.Network), 0D)
+            Dim newId As Integer = Database.DbExecuteTransaction(t, CashInTill, currentFloat, logMsg)
             If newId > 0 Then t.Id = newId
             Txns.Insert(0, t)
             If t.Id >= NextId Then NextId = t.Id + 1
@@ -143,6 +147,8 @@ Public Module Ledger
                 Case TypeCashOut, TypeTopUp
                     CashInTill += t.Amount
                     Floats(t.Network) -= t.Amount
+                Case TypeTillTopUp
+                    CashInTill -= t.Amount
             End Select
             Throw
         End Try
@@ -159,10 +165,13 @@ Public Module Ledger
             Case TypeCashOut, TypeTopUp
                 CashInTill += t.Amount
                 Floats(t.Network) -= t.Amount
+            Case TypeTillTopUp
+                CashInTill -= t.Amount
         End Select
 
         Try
-            Database.DbVoidTransaction(t.Id, t.Network, CashInTill, Floats(t.Network), reason, adminUser, adminRole, auditDetails)
+            Dim currentFloat As Decimal = If(Floats.ContainsKey(t.Network), Floats(t.Network), 0D)
+            Database.DbVoidTransaction(t.Id, t.Network, CashInTill, currentFloat, reason, adminUser, adminRole, auditDetails)
             Txns.Remove(t)
             Logs.Insert(0, New LogEntry With {
                 .TimeText = Date.Now.ToString("yyyy-MM-dd HH:mm:ss"),

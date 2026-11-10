@@ -168,9 +168,57 @@ Partial Public Class frmMain
         AddHandler radTypeTopUp.CheckedChanged, AddressOf Type_CheckedChanged
 
         AddHandler btnReport.Click, Sub(s As Object, e As EventArgs) OpenReportTab()
+        AddHandler btnToggleLimitMode.Click, AddressOf btnToggleLimitMode_Click
         AddHandler btnSetLimit.Click, AddressOf btnSetLimit_Click
         AddHandler btnBalances.Click, AddressOf btnBalances_Click
         AddHandler btnVoid.Click, AddressOf btnVoid_Click
+        AddHandler btnToggleTopUpType.Click, AddressOf btnToggleTopUpType_Click
+
+        AddHandler pnlCashCard.Click, Sub(s As Object, e As EventArgs) SetTillTopUpMode(True)
+        AddHandler lblCashTitle.Click, Sub(s As Object, e As EventArgs) SetTillTopUpMode(True)
+        AddHandler lblCashValue.Click, Sub(s As Object, e As EventArgs) SetTillTopUpMode(True)
+
+        AddHandler pnlMtnCard.Click, Sub(s As Object, e As EventArgs)
+                                          SelectNetwork(0)
+                                          SetTillTopUpMode(False)
+                                      End Sub
+        AddHandler lblMtnTitle.Click, Sub(s As Object, e As EventArgs)
+                                          SelectNetwork(0)
+                                          SetTillTopUpMode(False)
+                                      End Sub
+        AddHandler lblMtnValue.Click, Sub(s As Object, e As EventArgs)
+                                          SelectNetwork(0)
+                                          SetTillTopUpMode(False)
+                                      End Sub
+
+        AddHandler pnlTelecelCard.Click, Sub(s As Object, e As EventArgs)
+                                              SelectNetwork(1)
+                                              SetTillTopUpMode(False)
+                                          End Sub
+        AddHandler lblTelecelTitle.Click, Sub(s As Object, e As EventArgs)
+                                              SelectNetwork(1)
+                                              SetTillTopUpMode(False)
+                                          End Sub
+        AddHandler lblTelecelValue.Click, Sub(s As Object, e As EventArgs)
+                                              SelectNetwork(1)
+                                              SetTillTopUpMode(False)
+                                          End Sub
+
+        AddHandler pnlAirtelCard.Click, Sub(s As Object, e As EventArgs)
+                                             SelectNetwork(2)
+                                             SetTillTopUpMode(False)
+                                         End Sub
+        AddHandler lblAirtelTitle.Click, Sub(s As Object, e As EventArgs)
+                                             SelectNetwork(2)
+                                             SetTillTopUpMode(False)
+                                         End Sub
+        AddHandler lblAirtelValue.Click, Sub(s As Object, e As EventArgs)
+                                             SelectNetwork(2)
+                                             SetTillTopUpMode(False)
+                                         End Sub
+
+        tip.SetToolTip(btnToggleLimitMode, "Toggle between Set Float Limit and Top up cash in till")
+        tip.SetToolTip(btnToggleTopUpType, "Toggle between Float Top-up and Top up cash in till")
 
         AddHandler Me.FormClosing, AddressOf frmMain_FormClosing
 
@@ -195,6 +243,7 @@ Partial Public Class frmMain
         If currentUser.IsAdmin Then
             btnReport.Visible = True
             btnBackup.Visible = True
+            btnToggleLimitMode.Visible = True
             btnSetLimit.Visible = True
             btnBalances.Visible = True
             btnVoid.Visible = True
@@ -206,6 +255,7 @@ Partial Public Class frmMain
             End If
         Else
             ' Worker gets strictly separated non-admin access
+            btnToggleLimitMode.Visible = False
             btnSetLimit.Visible = False
             btnBalances.Visible = False
             btnVoid.Visible = False
@@ -317,14 +367,27 @@ Partial Public Class frmMain
         Get
             If radTypeCashIn IsNot Nothing AndAlso radTypeCashIn.Checked Then Return TypeCashIn
             If radTypeCashOut IsNot Nothing AndAlso radTypeCashOut.Checked Then Return TypeCashOut
-            If radTypeTopUp IsNot Nothing AndAlso radTypeTopUp.Checked Then Return TypeTopUp
+            If radTypeTopUp IsNot Nothing AndAlso radTypeTopUp.Checked Then
+                If radTypeTopUp.Text = TypeTillTopUp Then Return TypeTillTopUp
+                Return TypeTopUp
+            End If
             Return ""
         End Get
         Set(value As String)
             If radTypeCashIn Is Nothing Then Return
             radTypeCashIn.Checked = (value = TypeCashIn)
             radTypeCashOut.Checked = (value = TypeCashOut)
-            radTypeTopUp.Checked = (value = TypeTopUp)
+            If value = TypeTillTopUp Then
+                radTypeTopUp.Text = TypeTillTopUp
+                radTypeTopUp.ForeColor = Color.FromArgb(15, 118, 110)
+                radTypeTopUp.Checked = True
+            ElseIf value = TypeTopUp Then
+                radTypeTopUp.Text = TypeTopUp
+                radTypeTopUp.ForeColor = Color.FromArgb(109, 40, 217)
+                radTypeTopUp.Checked = True
+            Else
+                radTypeTopUp.Checked = False
+            End If
         End Set
     End Property
 
@@ -357,7 +420,7 @@ Partial Public Class frmMain
         Dim rb As RadioButton = TryCast(sender, RadioButton)
         If rb IsNot Nothing AndAlso rb.Checked Then
             epMain.SetError(pnlType, "")
-            Dim isTopUp As Boolean = (SelectedType = TypeTopUp)
+            Dim isTopUp As Boolean = (SelectedType = TypeTopUp OrElse SelectedType = TypeTillTopUp)
             txtPhone.Enabled = Not isTopUp
             If isTopUp Then
                 txtPhone.Clear()
@@ -559,8 +622,8 @@ Partial Public Class frmMain
         End If
         Dim t As Txn = DirectCast(dgvTransactions.SelectedRows(0).DataBoundItem, Txn)
 
-        If t.TxnType = TypeCashIn AndAlso CashInTill < t.Amount Then
-            MessageBox.Show("Cannot void: not enough cash in till to reverse this Cash-In.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        If (t.TxnType = TypeCashIn OrElse t.TxnType = TypeTillTopUp) AndAlso CashInTill < t.Amount Then
+            MessageBox.Show("Cannot void: not enough cash in till to reverse this transaction.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
         If (t.TxnType = TypeCashOut OrElse t.TxnType = TypeTopUp) AndAlso Floats(t.Network) < t.Amount Then
@@ -648,10 +711,74 @@ Partial Public Class frmMain
     End Sub
 
 
-    '  SET FLOAT LIMIT / SET BALANCES (ADMIN ONLY)
+    '  SET FLOAT LIMIT / TOP UP CASH IN TILL (ADMIN ONLY)
+
+    Private isTillTopUpMode As Boolean = False
+
+    Public Sub ToggleSetLimitMode()
+        SetTillTopUpMode(Not isTillTopUpMode)
+    End Sub
+
+    Public Sub SetTillTopUpMode(tillMode As Boolean)
+        isTillTopUpMode = tillMode
+        If isTillTopUpMode Then
+            btnSetLimit.Text = "Top up cash in till"
+            btnSetLimit.BackColor = Color.FromArgb(15, 118, 110) ' Deep Teal
+            btnToggleLimitMode.BackColor = Color.FromArgb(15, 118, 110)
+            tslStatus.Text = "Mode: Top up cash in till. Click the button to add cash to till drawer."
+        Else
+            btnSetLimit.Text = "Set Float Limit"
+            btnSetLimit.BackColor = LimitPurple
+            btnToggleLimitMode.BackColor = Color.FromArgb(107, 114, 128)
+            tslStatus.Text = "Mode: Set Float Limit. Select a network, then click to set low-float limit."
+        End If
+    End Sub
+
+    Private Sub btnToggleLimitMode_Click(sender As Object, e As EventArgs)
+        ToggleSetLimitMode()
+    End Sub
+
+    Public Sub ToggleTopUpType()
+        If radTypeTopUp.Text = TypeTopUp Then
+            radTypeTopUp.Text = TypeTillTopUp
+            radTypeTopUp.ForeColor = Color.FromArgb(15, 118, 110)
+        Else
+            radTypeTopUp.Text = TypeTopUp
+            radTypeTopUp.ForeColor = Color.FromArgb(109, 40, 217)
+        End If
+        radTypeTopUp.Checked = True
+        Type_CheckedChanged(radTypeTopUp, EventArgs.Empty)
+        tslStatus.Text = "Entry type: " & radTypeTopUp.Text & "."
+    End Sub
+
+    Private Sub btnToggleTopUpType_Click(sender As Object, e As EventArgs)
+        ToggleTopUpType()
+    End Sub
 
     Private Sub btnSetLimit_Click(sender As Object, e As EventArgs)
         If Not currentUser.IsAdmin Then Return
+
+        If isTillTopUpMode Then
+            Dim input As String = InputBox("Enter cash amount to add to till drawer (in cedis):",
+                                           "Top up cash in till", "500.00")
+            If input.Trim() = "" Then Return
+            Dim v As Decimal
+            If Not TryParseMoney(input, v) OrElse v <= 0D Then
+                MessageBox.Show("Please enter a valid amount greater than zero.",
+                                "Top up cash in till", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            CashInTill += v
+            Database.DbSaveTillState("cash_in_till", CashInTill.ToString("F2", CultureInfo.InvariantCulture))
+            Dim logMsg As String = "Added " & Money(v) & " to till drawer. New till balance: " & Money(CashInTill)
+            Audit("Till top-up", logMsg)
+            NotBackedUp = True
+            RefreshAll()
+            tslStatus.Text = "Till topped up with " & Money(v) & ". New cash in till: " & Money(CashInTill) & "."
+            Return
+        End If
+
         If SelectedNetwork = "" Then
             MessageBox.Show("First choose a network using the Network buttons, then click Set Float Limit.",
                             "Set Float Limit", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -659,19 +786,19 @@ Partial Public Class frmMain
             Return
         End If
         Dim net As String = SelectedNetwork
-        Dim input As String = InputBox("Enter the low-float limit for " & net & " (in cedis):",
+        Dim inputLimit As String = InputBox("Enter the low-float limit for " & net & " (in cedis):",
                                        "Set Float Limit", Limits(net).ToString("0.00", CultureInfo.InvariantCulture))
-        If input.Trim() = "" Then Return
-        Dim v As Decimal
-        If Not TryParseMoney(input, v) Then
+        If inputLimit.Trim() = "" Then Return
+        Dim vLimit As Decimal
+        If Not TryParseMoney(inputLimit, vLimit) Then
             MessageBox.Show("Please enter a valid amount, for example 1500 or 1500.50.",
                             "Set Float Limit", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
-        SaveLimit(net, v)
-        Audit("Float limit", net & " limit set to " & Money(v))
+        SaveLimit(net, vLimit)
+        Audit("Float limit", net & " limit set to " & Money(vLimit))
         RefreshAll()
-        tslStatus.Text = "Float limit for " & net & " set to " & Money(v) & "."
+        tslStatus.Text = "Float limit for " & net & " set to " & Money(vLimit) & "."
     End Sub
 
     Private Sub btnBalances_Click(sender As Object, e As EventArgs)

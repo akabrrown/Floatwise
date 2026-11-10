@@ -73,6 +73,7 @@ Partial Class frmMain
     Friend WithEvents radTypeCashIn As System.Windows.Forms.RadioButton
     Friend WithEvents radTypeCashOut As System.Windows.Forms.RadioButton
     Friend WithEvents radTypeTopUp As System.Windows.Forms.RadioButton
+    Friend WithEvents btnToggleTopUpType As System.Windows.Forms.Button
     Friend WithEvents lblPhone As System.Windows.Forms.Label
     Friend WithEvents txtPhone As System.Windows.Forms.TextBox
     Friend WithEvents lblAmount As System.Windows.Forms.Label
@@ -99,6 +100,7 @@ Partial Class frmMain
 
     Friend WithEvents btnReport As System.Windows.Forms.Button
     Friend WithEvents btnBackup As System.Windows.Forms.Button
+    Friend WithEvents btnToggleLimitMode As System.Windows.Forms.Button
     Friend WithEvents btnSetLimit As System.Windows.Forms.Button
     Friend WithEvents btnBalances As System.Windows.Forms.Button
     Friend WithEvents btnVoid As System.Windows.Forms.Button
@@ -244,6 +246,7 @@ Partial Class frmMain
         Me.radTypeCashIn = New System.Windows.Forms.RadioButton()
         Me.radTypeCashOut = New System.Windows.Forms.RadioButton()
         Me.radTypeTopUp = New System.Windows.Forms.RadioButton()
+        Me.btnToggleTopUpType = New System.Windows.Forms.Button()
         Me.lblPhone = New System.Windows.Forms.Label()
         Me.txtPhone = New System.Windows.Forms.TextBox()
         Me.lblAmount = New System.Windows.Forms.Label()
@@ -268,6 +271,7 @@ Partial Class frmMain
         Me.lblCommissionTotal = New System.Windows.Forms.Label()
         Me.btnReport = New System.Windows.Forms.Button()
         Me.btnBackup = New System.Windows.Forms.Button()
+        Me.btnToggleLimitMode = New System.Windows.Forms.Button()
         Me.btnSetLimit = New System.Windows.Forms.Button()
         Me.btnBalances = New System.Windows.Forms.Button()
         Me.btnVoid = New System.Windows.Forms.Button()
@@ -530,6 +534,7 @@ Partial Class frmMain
         Me.tpDash.Controls.Add(Me.grpToday)
         Me.tpDash.Controls.Add(Me.btnReport)
         Me.tpDash.Controls.Add(Me.btnBackup)
+        Me.tpDash.Controls.Add(Me.btnToggleLimitMode)
         Me.tpDash.Controls.Add(Me.btnSetLimit)
         Me.tpDash.Controls.Add(Me.btnBalances)
         Me.tpDash.Controls.Add(Me.btnVoid)
@@ -824,9 +829,10 @@ Partial Class frmMain
         Me.pnlType.Controls.Add(Me.radTypeCashIn)
         Me.pnlType.Controls.Add(Me.radTypeCashOut)
         Me.pnlType.Controls.Add(Me.radTypeTopUp)
+        Me.pnlType.Controls.Add(Me.btnToggleTopUpType)
         Me.pnlType.Location = New System.Drawing.Point(16, 106)
         Me.pnlType.Name = "pnlType"
-        Me.pnlType.Size = New System.Drawing.Size(346, 28)
+        Me.pnlType.Size = New System.Drawing.Size(356, 28)
         Me.pnlType.TabIndex = 3
         '
         'radTypeCashIn
@@ -867,6 +873,19 @@ Partial Class frmMain
         Me.radTypeTopUp.TabStop = True
         Me.radTypeTopUp.Text = "Float Top-up"
         Me.radTypeTopUp.UseVisualStyleBackColor = True
+        '
+        'btnToggleTopUpType
+        '
+        Me.btnToggleTopUpType.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(246, Byte), Integer))
+        Me.btnToggleTopUpType.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnToggleTopUpType.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnToggleTopUpType.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnToggleTopUpType.Location = New System.Drawing.Point(325, 2)
+        Me.btnToggleTopUpType.Name = "btnToggleTopUpType"
+        Me.btnToggleTopUpType.Size = New System.Drawing.Size(26, 25)
+        Me.btnToggleTopUpType.TabIndex = 3
+        Me.btnToggleTopUpType.Text = "⇄"
+        Me.btnToggleTopUpType.UseVisualStyleBackColor = False
         '
         'lblPhone
         '
@@ -1146,6 +1165,19 @@ Partial Class frmMain
         Me.btnBackup.TabIndex = 8
         Me.btnBackup.Text = "Save Backup"
         Me.btnBackup.UseVisualStyleBackColor = False
+        '
+        'btnToggleLimitMode
+        '
+        Me.btnToggleLimitMode.BackColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnToggleLimitMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnToggleLimitMode.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
+        Me.btnToggleLimitMode.ForeColor = System.Drawing.Color.White
+        Me.btnToggleLimitMode.Location = New System.Drawing.Point(398, 622)
+        Me.btnToggleLimitMode.Name = "btnToggleLimitMode"
+        Me.btnToggleLimitMode.Size = New System.Drawing.Size(38, 42)
+        Me.btnToggleLimitMode.TabIndex = 8
+        Me.btnToggleLimitMode.Text = "⇄"
+        Me.btnToggleLimitMode.UseVisualStyleBackColor = False
         '
         'btnSetLimit
         '
