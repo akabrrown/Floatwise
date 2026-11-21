@@ -11,17 +11,17 @@
 
 ## 👥 Project Group Members & Index Numbers
 
-| S/N | Full Name | Index Number | Role / Contribution |
-| :-: | :--- | :-: | :--- |
-| **1** | **Akayete Benedict** | `10334595` | Project Lead & Full-Stack Systems Engineering |
-| **2** | **Joshua Tettey Dorkah** | `10333960` | Software Architecture & Windows Forms UI/UX |
-| **3** | **Basah Benedict** | `10327072` | Database Design, SQLite Engine & ACID Transactions |
-| **4** | **Kelvin Ansah Oyirifi** | `10333899` | Cryptographic Security & PBKDF2 Authentication |
-| **5** | **Simon Kofi Asem** | `10322968` | Business Logic, Financial Invariants & Cash Top-ups |
-| **6** | **Oscar Kormla Leysa** | `10316597` | Physical Cash Denomination & Till Reconciliation |
-| **7** | **Donkor Francis** | `10334809` | E-Cash SIM Auditing & Multi-Tenant Role Isolation |
-| **8** | **Samuel Salase Azigi Plahar** | `10330785` | Reporting Engine, CSV Exports & Atomic Backups |
-| **9** | **Herbert Kofi Sam** | `10333967` | Quality Assurance, Verification & Documentation |
+| S/N | Full Name | Index Number |
+| :-: | :--- | :-: |
+| **1** | **Akayete Benedict** | `10334595` |
+| **2** | **Joshua Tettey Dorkah** | `10333960` |
+| **3** | **Basah Benedict** | `10327072` |
+| **4** | **Kelvin Ansah Oyirifi** | `10333899` |
+| **5** | **Simon Kofi Asem** | `10322968` |
+| **6** | **Oscar Kormla Leysa** | `10316597` |
+| **7** | **Donkor Francis** | `10334809` |
+| **8** | **Samuel Salase Azigi Plahar** | `10330785` |
+| **9** | **Herbert Kofi Sam** | `10333967` |
 
 ---
 
