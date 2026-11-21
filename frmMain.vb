@@ -94,20 +94,20 @@ Partial Public Class frmMain
         If currentUser Is Nothing OrElse currentUser.IsAdmin Then
             Return Txns.ToList()
         End If
-        ' Worker scope: strictly exclude Admin transactions to ensure zero interference
+        ' Worker scope: strictly their own individual transactions; never see admin or other workers
         Return Txns.Where(Function(t) (t.Role <> "Admin") AndAlso
-            (t.Role = "Worker" OrElse t.RecordedBy = currentUser.Username OrElse String.IsNullOrEmpty(t.Role))).ToList()
+            String.Equals(t.RecordedBy, currentUser.Username, StringComparison.OrdinalIgnoreCase)).ToList()
     End Function
 
     Public Function GetScopedLogs() As List(Of LogEntry)
         If currentUser Is Nothing OrElse currentUser.IsAdmin Then
             Return Logs.ToList()
         End If
-        ' Worker scope: strictly exclude Admin actions & sensitive administrative activities
+        ' Worker scope: strictly their own individual activity logs; never see admin or other workers
         Dim adminActivities() As String = {"User created", "User enabled", "User disabled", "Float limit", "Balances set", "Till adjusted", "Void", "Log cleared", "Log entry deleted"}
         Return Logs.Where(Function(l) (l.Role <> "Admin") AndAlso
             Not adminActivities.Contains(l.Activity) AndAlso
-            (l.UserName = currentUser.Username OrElse String.IsNullOrEmpty(l.Role) OrElse l.Role = "Worker")).ToList()
+            String.Equals(l.UserName, currentUser.Username, StringComparison.OrdinalIgnoreCase)).ToList()
     End Function
 
     Private Function NewPage(title As String, accent As Color) As TabPage
@@ -219,6 +219,11 @@ Partial Public Class frmMain
 
         tip.SetToolTip(btnToggleLimitMode, "Toggle between Set Float Limit and Top up cash in till")
         tip.SetToolTip(btnToggleTopUpType, "Toggle between Float Top-up and Top up cash in till")
+
+        SetPlaceholder(txtPhone, "e.g. 0241234567")
+        SetPlaceholder(txtAmount, "0.00")
+        SetPlaceholder(txtCommission, "0.00")
+        SetPlaceholder(txtLogSearch, "Search activity logs...")
 
         UpdateTopUpLayout()
 
@@ -869,33 +874,37 @@ Partial Public Class frmMain
         Return """" & value.Replace("""", """""") & """"
     End Function
 
-    Private Sub btnBackup_Click(sender As Object, e As EventArgs)
-        Dim scoped As List(Of Txn) = GetScopedTxns()
-        If scoped.Count = 0 Then
-            MessageBox.Show("There are no transactions to back up yet.", "Save Backup", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Return
-        End If
-
+    Private Sub btnBackup_Click(sender As Object, e As EventArgs) Handles btnBackup.Click
         Using dlg As New SaveFileDialog()
-            dlg.Title = "Save backup"
-            dlg.Filter = "CSV file (*.csv)|*.csv"
-            dlg.FileName = "FloatWise_" & Date.Now.ToString("yyyy-MM-dd") & ".csv"
+            dlg.Title = "Save FloatWise Backup"
+            dlg.Filter = "SQLite Database Backup (*.db)|*.db|CSV Transactions Export (*.csv)|*.csv|All Files (*.*)|*.*"
+            dlg.FilterIndex = 1
+            dlg.FileName = "FloatWise_Backup_" & Date.Now.ToString("yyyy-MM-dd_HHmm") & ".db"
             If dlg.ShowDialog() <> DialogResult.OK Then Return
 
             Try
-                Using sw As New StreamWriter(dlg.FileName, False, New UTF8Encoding(True))
-                    sw.WriteLine("No,Time,Network,Type,Phone,Amount,Commission,RecordedBy,Role")
-                    For Each t As Txn In scoped.OrderBy(Function(x) x.Id)
-                        Dim phoneCell As String = ""
-                        If t.Phone <> "" Then phoneCell = CsvField("=""" & t.Phone & """")
-                        sw.WriteLine(t.Id & "," & t.TimeText & "," & CsvField(t.Network) & "," & CsvField(t.TxnType) & "," &
-                                     phoneCell & "," & t.Amount.ToString("0.00", CultureInfo.InvariantCulture) & "," &
-                                     t.Commission.ToString("0.00", CultureInfo.InvariantCulture) & "," & CsvField(t.RecordedBy) & "," & CsvField(t.Role))
-                    Next
-                End Using
+                Dim ext As String = Path.GetExtension(dlg.FileName).ToLowerInvariant()
+                If ext = ".csv" Then
+                    Dim scoped As List(Of Txn) = GetScopedTxns()
+                    Using sw As New StreamWriter(dlg.FileName, False, New UTF8Encoding(True))
+                        sw.WriteLine("No,Time,Network,Type,Phone,Amount,Commission,RecordedBy,Role")
+                        For Each t As Txn In scoped.OrderBy(Function(x) x.Id)
+                            Dim phoneCell As String = ""
+                            If t.Phone <> "" Then phoneCell = CsvField("=""" & t.Phone & """")
+                            sw.WriteLine(t.Id & "," & t.TimeText & "," & CsvField(t.Network) & "," & CsvField(t.TxnType) & "," &
+                                         phoneCell & "," & t.Amount.ToString("0.00", CultureInfo.InvariantCulture) & "," &
+                                         t.Commission.ToString("0.00", CultureInfo.InvariantCulture) & "," & CsvField(t.RecordedBy) & "," & CsvField(t.Role))
+                        Next
+                    End Using
+                Else
+                    Database.DbBackup(dlg.FileName)
+                End If
+
                 NotBackedUp = False
                 Audit("Backup", "Saved " & Path.GetFileName(dlg.FileName))
                 tslStatus.Text = "Backup saved: " & Path.GetFileName(dlg.FileName)
+                MessageBox.Show("Backup successfully saved to:" & vbCrLf & dlg.FileName,
+                                "Save Backup", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Catch ex As Exception
                 MessageBox.Show("The backup could not be saved." & vbCrLf & ex.Message,
                                 "Save Backup", MessageBoxButtons.OK, MessageBoxIcon.Error)

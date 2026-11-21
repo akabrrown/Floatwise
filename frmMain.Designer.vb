@@ -193,10 +193,15 @@ Partial Class frmMain
 
     ' ---- Users Tab Controls ----
     Friend WithEvents grpAddUser As System.Windows.Forms.GroupBox
+    Friend WithEvents lblUName As System.Windows.Forms.Label
     Friend WithEvents txtUName As System.Windows.Forms.TextBox
+    Friend WithEvents lblUUser As System.Windows.Forms.Label
     Friend WithEvents txtUUser As System.Windows.Forms.TextBox
+    Friend WithEvents lblUPass As System.Windows.Forms.Label
     Friend WithEvents txtUPass As System.Windows.Forms.TextBox
+    Friend WithEvents lblUConfirm As System.Windows.Forms.Label
     Friend WithEvents txtUConfirm As System.Windows.Forms.TextBox
+    Friend WithEvents lblURole As System.Windows.Forms.Label
     Friend WithEvents cboURole As System.Windows.Forms.ComboBox
     Friend WithEvents btnCreateUser As System.Windows.Forms.Button
     Friend WithEvents lblUserMsg As System.Windows.Forms.Label
@@ -356,10 +361,15 @@ Partial Class frmMain
         Me.lblLogNote = New System.Windows.Forms.Label()
         Me.tpUsers = New System.Windows.Forms.TabPage()
         Me.grpAddUser = New System.Windows.Forms.GroupBox()
+        Me.lblUName = New System.Windows.Forms.Label()
         Me.txtUName = New System.Windows.Forms.TextBox()
+        Me.lblUUser = New System.Windows.Forms.Label()
         Me.txtUUser = New System.Windows.Forms.TextBox()
+        Me.lblUPass = New System.Windows.Forms.Label()
         Me.txtUPass = New System.Windows.Forms.TextBox()
+        Me.lblUConfirm = New System.Windows.Forms.Label()
         Me.txtUConfirm = New System.Windows.Forms.TextBox()
+        Me.lblURole = New System.Windows.Forms.Label()
         Me.cboURole = New System.Windows.Forms.ComboBox()
         Me.btnCreateUser = New System.Windows.Forms.Button()
         Me.lblUserMsg = New System.Windows.Forms.Label()
@@ -2136,10 +2146,15 @@ Partial Class frmMain
         'grpAddUser
         '
         Me.grpAddUser.BackColor = System.Drawing.Color.White
+        Me.grpAddUser.Controls.Add(Me.lblUName)
         Me.grpAddUser.Controls.Add(Me.txtUName)
+        Me.grpAddUser.Controls.Add(Me.lblUUser)
         Me.grpAddUser.Controls.Add(Me.txtUUser)
+        Me.grpAddUser.Controls.Add(Me.lblUPass)
         Me.grpAddUser.Controls.Add(Me.txtUPass)
+        Me.grpAddUser.Controls.Add(Me.lblUConfirm)
         Me.grpAddUser.Controls.Add(Me.txtUConfirm)
+        Me.grpAddUser.Controls.Add(Me.lblURole)
         Me.grpAddUser.Controls.Add(Me.cboURole)
         Me.grpAddUser.Controls.Add(Me.btnCreateUser)
         Me.grpAddUser.Controls.Add(Me.lblUserMsg)
@@ -2147,48 +2162,103 @@ Partial Class frmMain
         Me.grpAddUser.ForeColor = System.Drawing.Color.FromArgb(CType(CType(190, Byte), Integer), CType(CType(24, Byte), Integer), CType(CType(93, Byte), Integer))
         Me.grpAddUser.Location = New System.Drawing.Point(12, 12)
         Me.grpAddUser.Name = "grpAddUser"
-        Me.grpAddUser.Size = New System.Drawing.Size(440, 480)
+        Me.grpAddUser.Size = New System.Drawing.Size(440, 500)
         Me.grpAddUser.TabIndex = 0
         Me.grpAddUser.TabStop = False
         Me.grpAddUser.Text = "Create an account"
+        '
+        'lblUName
+        '
+        Me.lblUName.AutoSize = True
+        Me.lblUName.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblUName.ForeColor = System.Drawing.Color.FromArgb(CType(CType(55, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(81, Byte), Integer))
+        Me.lblUName.Location = New System.Drawing.Point(20, 30)
+        Me.lblUName.Name = "lblUName"
+        Me.lblUName.Size = New System.Drawing.Size(69, 17)
+        Me.lblUName.TabIndex = 0
+        Me.lblUName.Text = "Full name"
         '
         'txtUName
         '
         Me.txtUName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtUName.Font = New System.Drawing.Font("Segoe UI", 10.5!)
-        Me.txtUName.Location = New System.Drawing.Point(20, 56)
+        Me.txtUName.Location = New System.Drawing.Point(20, 50)
         Me.txtUName.Name = "txtUName"
         Me.txtUName.Size = New System.Drawing.Size(400, 31)
-        Me.txtUName.TabIndex = 0
+        Me.txtUName.TabIndex = 1
+        '
+        'lblUUser
+        '
+        Me.lblUUser.AutoSize = True
+        Me.lblUUser.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblUUser.ForeColor = System.Drawing.Color.FromArgb(CType(CType(55, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(81, Byte), Integer))
+        Me.lblUUser.Location = New System.Drawing.Point(20, 88)
+        Me.lblUUser.Name = "lblUUser"
+        Me.lblUUser.Size = New System.Drawing.Size(70, 17)
+        Me.lblUUser.TabIndex = 2
+        Me.lblUUser.Text = "Username"
         '
         'txtUUser
         '
         Me.txtUUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtUUser.Font = New System.Drawing.Font("Segoe UI", 10.5!)
-        Me.txtUUser.Location = New System.Drawing.Point(20, 116)
+        Me.txtUUser.Location = New System.Drawing.Point(20, 108)
         Me.txtUUser.Name = "txtUUser"
         Me.txtUUser.Size = New System.Drawing.Size(400, 31)
-        Me.txtUUser.TabIndex = 1
+        Me.txtUUser.TabIndex = 3
+        '
+        'lblUPass
+        '
+        Me.lblUPass.AutoSize = True
+        Me.lblUPass.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblUPass.ForeColor = System.Drawing.Color.FromArgb(CType(CType(55, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(81, Byte), Integer))
+        Me.lblUPass.Location = New System.Drawing.Point(20, 146)
+        Me.lblUPass.Name = "lblUPass"
+        Me.lblUPass.Size = New System.Drawing.Size(183, 17)
+        Me.lblUPass.TabIndex = 4
+        Me.lblUPass.Text = "Password (min. 6 characters)"
         '
         'txtUPass
         '
         Me.txtUPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtUPass.Font = New System.Drawing.Font("Segoe UI", 10.5!)
-        Me.txtUPass.Location = New System.Drawing.Point(20, 176)
+        Me.txtUPass.Location = New System.Drawing.Point(20, 166)
         Me.txtUPass.Name = "txtUPass"
         Me.txtUPass.Size = New System.Drawing.Size(400, 31)
-        Me.txtUPass.TabIndex = 2
+        Me.txtUPass.TabIndex = 5
         Me.txtUPass.UseSystemPasswordChar = True
+        '
+        'lblUConfirm
+        '
+        Me.lblUConfirm.AutoSize = True
+        Me.lblUConfirm.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblUConfirm.ForeColor = System.Drawing.Color.FromArgb(CType(CType(55, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(81, Byte), Integer))
+        Me.lblUConfirm.Location = New System.Drawing.Point(20, 204)
+        Me.lblUConfirm.Name = "lblUConfirm"
+        Me.lblUConfirm.Size = New System.Drawing.Size(120, 17)
+        Me.lblUConfirm.TabIndex = 6
+        Me.lblUConfirm.Text = "Confirm password"
         '
         'txtUConfirm
         '
         Me.txtUConfirm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtUConfirm.Font = New System.Drawing.Font("Segoe UI", 10.5!)
-        Me.txtUConfirm.Location = New System.Drawing.Point(20, 236)
+        Me.txtUConfirm.Location = New System.Drawing.Point(20, 224)
         Me.txtUConfirm.Name = "txtUConfirm"
         Me.txtUConfirm.Size = New System.Drawing.Size(400, 31)
-        Me.txtUConfirm.TabIndex = 3
+        Me.txtUConfirm.TabIndex = 7
         Me.txtUConfirm.UseSystemPasswordChar = True
+        '
+        'lblURole
+        '
+        Me.lblURole.AutoSize = True
+        Me.lblURole.Font = New System.Drawing.Font("Segoe UI", 9.5!, System.Drawing.FontStyle.Bold)
+        Me.lblURole.ForeColor = System.Drawing.Color.FromArgb(CType(CType(55, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(81, Byte), Integer))
+        Me.lblURole.Location = New System.Drawing.Point(20, 262)
+        Me.lblURole.Name = "lblURole"
+        Me.lblURole.Size = New System.Drawing.Size(36, 17)
+        Me.lblURole.TabIndex = 8
+        Me.lblURole.Text = "Role"
         '
         'cboURole
         '
@@ -2196,10 +2266,10 @@ Partial Class frmMain
         Me.cboURole.Font = New System.Drawing.Font("Segoe UI", 10.5!)
         Me.cboURole.FormattingEnabled = True
         Me.cboURole.Items.AddRange(New Object() {"Worker (record txns, count cash, reports)", "Admin (full control)"})
-        Me.cboURole.Location = New System.Drawing.Point(20, 296)
+        Me.cboURole.Location = New System.Drawing.Point(20, 282)
         Me.cboURole.Name = "cboURole"
         Me.cboURole.Size = New System.Drawing.Size(400, 31)
-        Me.cboURole.TabIndex = 4
+        Me.cboURole.TabIndex = 9
         '
         'btnCreateUser
         '
@@ -2207,10 +2277,10 @@ Partial Class frmMain
         Me.btnCreateUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnCreateUser.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
         Me.btnCreateUser.ForeColor = System.Drawing.Color.White
-        Me.btnCreateUser.Location = New System.Drawing.Point(20, 346)
+        Me.btnCreateUser.Location = New System.Drawing.Point(20, 332)
         Me.btnCreateUser.Name = "btnCreateUser"
-        Me.btnCreateUser.Size = New System.Drawing.Size(400, 46)
-        Me.btnCreateUser.TabIndex = 5
+        Me.btnCreateUser.Size = New System.Drawing.Size(400, 44)
+        Me.btnCreateUser.TabIndex = 10
         Me.btnCreateUser.Text = "Create account"
         Me.btnCreateUser.UseVisualStyleBackColor = False
         '
@@ -2218,10 +2288,10 @@ Partial Class frmMain
         '
         Me.lblUserMsg.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold)
         Me.lblUserMsg.ForeColor = System.Drawing.Color.FromArgb(CType(CType(234, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(12, Byte), Integer))
-        Me.lblUserMsg.Location = New System.Drawing.Point(20, 402)
+        Me.lblUserMsg.Location = New System.Drawing.Point(20, 386)
         Me.lblUserMsg.Name = "lblUserMsg"
-        Me.lblUserMsg.Size = New System.Drawing.Size(400, 60)
-        Me.lblUserMsg.TabIndex = 6
+        Me.lblUserMsg.Size = New System.Drawing.Size(400, 56)
+        Me.lblUserMsg.TabIndex = 11
         '
         'dgvUsers
         '

@@ -121,48 +121,6 @@ Public Module Database
                 cmd.ExecuteNonQuery()
             End Using
         End Using
-
-        ' Automatic migration from legacy users.txt if users table is empty
-        MigrateLegacyUsers()
-    End Sub
-
-    Private Sub MigrateLegacyUsers()
-        Dim txtFile As String = Path.Combine(DbFolder, "users.txt")
-        If Not File.Exists(txtFile) Then Return
-
-        Using conn As SQLiteConnection = GetConnection()
-            Using checkCmd As New SQLiteCommand("SELECT COUNT(*) FROM users;", conn)
-                Dim count As Long = Convert.ToInt64(checkCmd.ExecuteScalar())
-                If count > 0 Then Return ' Already has users in SQLite
-            End Using
-
-            ' Read lines from legacy users.txt
-            Try
-                Dim lines() As String = File.ReadAllLines(txtFile)
-                Using tx As SQLiteTransaction = conn.BeginTransaction()
-                    For Each line As String In lines
-                        Dim p() As String = line.Split("|"c)
-                        If p.Length >= 7 Then
-                            Using insCmd As New SQLiteCommand("
-                                INSERT OR IGNORE INTO users (username, role, full_name, salt, hash, active, created)
-                                VALUES (@user, @role, @name, @salt, @hash, @active, @created);", conn, tx)
-                                insCmd.Parameters.AddWithValue("@user", p(0))
-                                insCmd.Parameters.AddWithValue("@role", p(1))
-                                insCmd.Parameters.AddWithValue("@name", p(2))
-                                insCmd.Parameters.AddWithValue("@salt", p(3))
-                                insCmd.Parameters.AddWithValue("@hash", p(4))
-                                insCmd.Parameters.AddWithValue("@active", If(p(5) = "1", 1, 0))
-                                insCmd.Parameters.AddWithValue("@created", p(6))
-                                insCmd.ExecuteNonQuery()
-                            End Using
-                        End If
-                    Next
-                    tx.Commit()
-                End Using
-            Catch
-                ' Non-critical migration fallback
-            End Try
-        End Using
     End Sub
 
     ' =================================================================
@@ -527,6 +485,21 @@ Public Module Database
                 End Using
 
                 tx.Commit()
+            End Using
+        End Using
+    End Sub
+
+    ' =================================================================
+    '  DATABASE BACKUP
+    ' =================================================================
+
+    ''' <summary>Performs a live, consistent SQLite online backup to the target destination file.</summary>
+    Public Sub DbBackup(destFilePath As String)
+        If File.Exists(destFilePath) Then File.Delete(destFilePath)
+        Using srcConn As SQLiteConnection = GetConnection()
+            Using destConn As New SQLiteConnection("Data Source=" & destFilePath & ";Version=3;")
+                destConn.Open()
+                srcConn.BackupDatabase(destConn, "main", "main", -1, Nothing, 0)
             End Using
         End Using
     End Sub

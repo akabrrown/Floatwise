@@ -54,6 +54,19 @@ Partial Public Class frmLogin
         AddHandler btnResetCancel.Click, Sub(s, e) ShowPanel(If(resetTargetRole = "Worker", "worker", "admin"))
         AddHandler btnResetSubmit.Click, AddressOf btnResetSubmit_Click
 
+        SetPlaceholder(txtAdminUser, "Enter admin username")
+        SetPlaceholder(txtAdminPass, "Enter password")
+        SetPlaceholder(txtWorkerUser, "Enter worker username")
+        SetPlaceholder(txtWorkerPass, "Enter password")
+        SetPlaceholder(txtSuName, "e.g. Jane Doe")
+        SetPlaceholder(txtSuUser, "e.g. admin")
+        SetPlaceholder(txtSuPass, "Enter password (min. 6 characters)")
+        SetPlaceholder(txtSuConfirm, "Re-enter password")
+        SetPlaceholder(txtResetUser, "Enter username")
+        SetPlaceholder(txtResetFullName, "Enter your full name")
+        SetPlaceholder(txtResetNewPass, "Enter new password")
+        SetPlaceholder(txtResetConfirm, "Re-enter new password")
+
         ShowPanel(If(AuthStore.AdminExists(), "admin", "signup"))
     End Sub
 

@@ -322,6 +322,11 @@ Partial Public Class frmMain
     '  USERS TAB  (ADMIN ONLY - the admin creates the workers)
     ' =====================================================================
     Private Sub InitUsersEvents()
+        SetPlaceholder(txtUName, "e.g. John Mensah")
+        SetPlaceholder(txtUUser, "e.g. jmensah")
+        SetPlaceholder(txtUPass, "Enter password (min. 6 characters)")
+        SetPlaceholder(txtUConfirm, "Re-enter password")
+
         AddHandler btnCreateUser.Click, AddressOf btnCreateUser_Click
         AddHandler btnToggleUser.Click, AddressOf btnToggleUser_Click
         AddHandler btnResetUserPass.Click, AddressOf btnResetUserPass_Click

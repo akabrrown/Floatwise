@@ -8,6 +8,24 @@ Imports System.Windows.Forms
 ' =====================================================================
 Public Module UI
 
+    Private Declare Auto Function SendMessage Lib "user32.dll" (hWnd As IntPtr, msg As Integer, wParam As Integer, <System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)> lParam As String) As Int32
+    Private Const EM_SETCUEBANNER As Integer = &H1501
+
+    ''' <summary>Sets native Windows gray placeholder text (cue banner) inside a TextBox.</summary>
+    Public Sub SetPlaceholder(tb As TextBox, placeholderText As String)
+        If tb Is Nothing Then Return
+        If tb.IsHandleCreated Then
+            SendMessage(tb.Handle, EM_SETCUEBANNER, 1, placeholderText)
+        Else
+            AddHandler tb.HandleCreated, Sub()
+                                             Try
+                                                 SendMessage(tb.Handle, EM_SETCUEBANNER, 1, placeholderText)
+                                             Catch
+                                             End Try
+                                         End Sub
+        End If
+    End Sub
+
     Public ReadOnly CediSign As String = "GH" & ChrW(&H20B5) & " "
 
     Public Function Col(code As String) As Color
