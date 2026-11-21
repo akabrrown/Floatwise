@@ -23,7 +23,8 @@ $RECYCLE.BIN/
 *.bak
 *.tmp
 
-# Media recordings
+# Media recordings and showcases
 *.mp4
+video_showcase/
 
 

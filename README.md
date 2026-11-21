@@ -84,15 +84,6 @@
 
 ---
 
-## 🎬 System Showcase Video
-
-An end-to-end 3-minute video presentation with professional neural voice narration and synchronized subtitles is included in the project:
-
-- **Local Video**: `FloatWise_Showcase_3Min.mp4` (1080p Full HD, ~3 minutes)
-- **Interactive Web Player**: Open `video_showcase/index.html` in any web browser to jump between all 6 feature scenes with interactive timestamps and playback controls.
-
----
-
 ## 📖 Comprehensive Documentation
 
 For complete operation manuals, step-by-step cashier guides, voiding workflows, and administrative playbooks, refer to:
